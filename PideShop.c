@@ -24,6 +24,9 @@ int customers_to_serve = 0;
 int total_customers = 0;
 int prepared_meals = 0;
 
+
+int *prepared_by_cook; // Dynamic array to hold cook ids for each meal
+
 /*  */
 void handle_client(int client_socket);
 
@@ -45,6 +48,12 @@ int main(int argc, char *argv[]) {
     int cookPoolSize = atoi(argv[2]);
     int deliveryPoolSize = atoi(argv[3]);
     int deliverySpeed = atoi(argv[4]);
+
+    prepared_by_cook = (int *)malloc(cook_count * sizeof(int));
+    if (prepared_by_cook == NULL) {
+        perror("Failed to allocate memory for cook ids");
+        exit(EXIT_FAILURE);
+    }
 
     pthread_t managerThread;
     pthread_t cookThread[cookPoolSize];
@@ -120,14 +129,15 @@ int main(int argc, char *argv[]) {
 
 
 
-    a = pthread_create(&managerThread, NULL, manager, (void *)sockfd); // Create manager thread
+    a = pthread_create(&managerThread, NULL, manager, (void*)(intptr_t)sockfd); // Create manager thread
     if (a != 0) {
         printf("Error creating manager thread\n");
         return 1;
     }
 
+    int *cook_ids = malloc(cook_count * sizeof(int));
     for (int i = 0; i < cookPoolSize; i++) { // Create worker threads
-        a = pthread_create(&cookThread[i], NULL, cook, NULL);
+        a = pthread_create(&cookThread[i], NULL, cook, &cook_ids[i]);
         if (a != 0) {
             printf("Error creating cook thread\n");
             return 1;
@@ -170,11 +180,14 @@ int main(int argc, char *argv[]) {
     sem_destroy(&oven_space);
     sem_destroy(&door_access);
     sem_destroy(&shovels);
+
+    free(prepared_by_cook);
+    free(cook_ids);
     return 0;
 }
 
 void *manager(void* arg) {
-    intptr_t sockfd = (intptr_t)arg;
+    int sockfd = (intptr_t)arg;
     printf("%d\n", sockfd);
     if (listen(sockfd, 3) < 0) {
         perror("listen");
