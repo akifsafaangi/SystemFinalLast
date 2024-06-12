@@ -1,64 +1,9 @@
-1 oven(fırın)
-manager order alacak(socketten okur). boşta olan bir cooka yazar(cook thread).
+The Custumers are informed when their orders are placed, prepared, cooked and handed out for delivery
 
-Cook -- The cook takes the order and prepares it around the same time as it takes your computer to calculate the psuedo-inverse of a 30 by 40 matrix having complex elements
-Sonra fırıncı küreğini alacak(semaphore?) fırına koyacak. Yukardakinin yarısı kadar süre uyur.
-Piştikten sonra managera verilir. Manager deliverye verir
+However at the end of the day, the manager checks the amount of deliveries of each personal and promotes the most efficeint one.
 
+control c d
 
-delivery personel. Hızı sabit götürme süresi adrese bağlı
+sudo inverse
 
-Kürek 3 tane
-Oven 6 tane yemek tutabilir. 2 yeri var hem alıp hem yemek konabilir.
-
-sonradan bağlanacak müşteriler
-
-
-Akış
-manager sipairişi aldı(tek sipariş alıyor bitince yenisine geçiyor?). Boşta olan cook personele verdi. Cook personel yemeği hazırladı. Fırına koydu. Tekrar eski yerine döndü yeni sipariş bekledi. Koyduğu yemeği sadece kendi mi alacak?
-Bu sırada başka sipariş geldiyse manager başka personele verebilir.
-
-Yemek olduktan sonra aldığında meal count bir artar. Manager bu count 1 artınca bunu alır ve boşta olan delivery threade yollar.
-
-Delivery personel 3 meal alınca ayrılacak. Gideceği yerleri en kısa yoldan uzuna göre mi yapacak? elevator algo? Verdiği siparişlerin sayısını tutacak.
-
-
-The Custumers are informed when their 
-orders are placed, 
-prepared,
-cooked and 
-handed out for delivery.
-
-
-
-Map, cancel ve delivery sonra
-
-
-Manager ve customer arasında socket kur. İletişimi sağla
-Bağlanınca pid ile siparişi yolla
-Manager ile order al. Bunu cooka ver. Senkronizasyon nasıl olacak? Cookta condition variable olsa?
-Cook zamanını yaz.
-Bir tanesi koysun gelsin. O sıra yenisini yapsın. Bitince fırındakini alsın. hazır desin. manager nasıl anlayacak?
-
-Aralarındaki senkronizasyonu yap. 3 kürek var hepsi alamaz(3 tane için nasıl mutex? sayı muhabbetli olan mı). Oven 2 kişi kullanabilir(oven için de aynı şey geçerli).
-
-Manager gelince delivery birine verir. cond variable
-
-
-
-
-
-
-
-Manager  thread
-cook
-delvier person 
-
-
-customer
-siparişi veriyor
-bilgi alıyor
-log file
-
-
-sadece tek delivery ve cook bir siparişle mi uğraşacak?
+delivery doluysa siparişleri koyamayız, manager ve aşçı beklemek zorunda

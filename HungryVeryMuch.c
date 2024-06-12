@@ -6,6 +6,8 @@
 #include <string.h>
 #include "utility.h"
 
+#define BUFFER_SIZE 1024
+
 int main(int argc, char *argv[]) {
     if(argc != 5) {
         printf("Usage: %s <portnumber> <numberOfClients> <p> <q>\n", argv[0]);
@@ -33,7 +35,7 @@ int main(int argc, char *argv[]) {
     serv_addr.sin_port = htons(port);  
   
     if ((status = connect(client_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) < 0) {
-        printf("\nConnection Failed \n");
+        perror("Connection Failed \n");
         return -1;
     }
     client_information info = {pid, numberOfClients, p, q};
@@ -43,8 +45,12 @@ int main(int argc, char *argv[]) {
         close(client_fd);
         return -1;
     }
-
     printf("Sent PID: %d\n", pid);
+    
+    client_server_message msg;
+    while(read(client_fd, &msg, sizeof(client_server_message)) > 0) {
+        printf("%s", msg.msg);
+    }
 
     // Close the connection
     close(client_fd);
